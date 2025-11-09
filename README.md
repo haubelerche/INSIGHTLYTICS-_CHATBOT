@@ -1,7 +1,7 @@
-Tiki Product Reviewer
+Insightlytics-chatbot
 =====================
 
-Tiki Product Reviewer is a lightweight React + Vite frontend that helps users query, summarize, and generate product reviews using scraped product data and language models (local or remote). It's intended for developers and data enthusiasts who want a UI to experiment with LLM-based product analysis and simple scraping/text-to-SQL flows.
+A lightweight React + Vite frontend that helps users query, summarize, and generate product reviews using scraped product data and language models (local or remote). It's intended for developers and data enthusiasts who want a UI to experiment with LLM-based product analysis and simple scraping/text-to-SQL flows.
 
 Purpose
 -------
