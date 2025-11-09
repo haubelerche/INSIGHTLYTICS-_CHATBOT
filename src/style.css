@@ -1,0 +1,20 @@
+/* Minimal styles for the chat UI (keeps things readable without Tailwind) */
+:root{
+	--bg:#406dce;
+	--card:#5682d9;
+	--muted:#94a3b8;
+	--accent:#4b75f4;
+}
+html,body,#root{height:100%;}
+body{margin:0;font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:#f6f6f6}
+
+/* Prevent the whole page from scrolling; only the messages region will scroll */
+body{overflow:hidden}
+
+.chat-input input::placeholder{color: #94a3b8}
+
+/* Smooth scrolling on mobile */
+/* scrollbar for the vertical messages area */
+.scrollable-messages{ -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.scrollable-messages::-webkit-scrollbar{display:none}
+
