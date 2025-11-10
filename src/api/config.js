@@ -1,22 +1,24 @@
-// Base URL resolution: accept VITE_API_URL (preferred) or VITE_API_BASE_URL for compatibility.
-// Allow both explicit env config and auto fallback.
-// Priority order:
-// 1. VITE_API_URL (explicit)
-// 2. VITE_API_BASE_URL (legacy name)
-// 3. If in production and none provided, use deployed Render URL as a safe default.
-// 4. If in dev, fallback to localhost.
-const DEFAULT_RENDER_URL = 'https://ecommerce-scraper-82ig.onrender.com';
+// Base URL resolution with Vercel Edge proxy support
+// 
+// In production (Vercel deploy): Use /api proxy routes (no CORS issues)
+// In development with proxy: Use Vite proxy (VITE_USE_PROXY=1)
+// In development without proxy: Use explicit backend URL or localhost
+//
+// Priority:
+// 1. Production → '' (use Vercel /api routes via relative paths)
+// 2. Dev + VITE_USE_PROXY=1 → '' (use Vite proxy)
+// 3. VITE_API_URL (explicit backend URL)
+// 4. Dev fallback → localhost:8000
 
-// In development, allow opting into the Vite proxy by setting VITE_USE_PROXY=1.
-// When enabled, we use relative URLs (BASE_URL='') so the dev server forwards
-// API requests to the backend target, avoiding CORS.
 const USE_DEV_PROXY = !!(import.meta.env.DEV && import.meta.env.VITE_USE_PROXY === '1');
+const USE_VERCEL_PROXY = import.meta.env.PROD; // In production, always use /api routes
 
-const rawEnv = USE_DEV_PROXY
-  ? ''
+const rawEnv = (USE_DEV_PROXY || USE_VERCEL_PROXY)
+  ? '' // Relative paths → proxy handles routing
   : (import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL.trim())
     || (import.meta.env.VITE_API_BASE_URL && import.meta.env.VITE_API_BASE_URL.trim())
-    || (import.meta.env.PROD ? DEFAULT_RENDER_URL : 'http://localhost:8000');
+    || 'http://localhost:8000'; // Dev fallback
+
 const NORMALIZED_BASE = rawEnv.replace(/\/+$/, '');
 
 export const API_CONFIG = {
