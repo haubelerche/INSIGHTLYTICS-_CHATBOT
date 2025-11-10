@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "merge-env": "node scripts/merge-env.js"
+    "merge-env": "node scripts/merge-env.js",
+    "smoke": "node scripts/smoke.js"
   },
   "keywords": [],
   "author": "",

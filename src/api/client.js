@@ -1,6 +1,14 @@
 import { API_CONFIG } from './config';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+// Resolve API base URL with normalization and a production-time safety check
+const API_BASE_URL = (() => {
+  const envUrl = API_CONFIG?.BASE_URL || import.meta.env.VITE_API_URL || 'http://localhost:8000';
+  const clean = (envUrl || '').trim().replace(/\/+$/, ''); // remove any trailing slashes
+  if (import.meta.env.PROD && !(API_CONFIG?.BASE_URL || import.meta.env.VITE_API_URL)) {
+    console.error('[API] Missing VITE_API_URL in production. Set Vercel env VITE_API_URL to your Render URL, e.g., https://ecommerce-scraper-82ig.onrender.com');
+  }
+  return clean;
+})();
 
 // In-memory cache and de-duplication for identical requests
 const responseCache = new Map(); // key -> { ts, data }

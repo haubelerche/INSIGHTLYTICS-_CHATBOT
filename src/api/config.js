@@ -1,6 +1,19 @@
+// Base URL resolution: accept VITE_API_URL (preferred) or VITE_API_BASE_URL for compatibility.
+// Allow both explicit env config and auto fallback.
+// Priority order:
+// 1. VITE_API_URL (explicit)
+// 2. VITE_API_BASE_URL (legacy name)
+// 3. If in production and none provided, use deployed Render URL as a safe default.
+// 4. If in dev, fallback to localhost.
+const DEFAULT_RENDER_URL = 'https://ecommerce-scraper-82ig.onrender.com';
+const rawEnv = (import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL.trim())
+  || (import.meta.env.VITE_API_BASE_URL && import.meta.env.VITE_API_BASE_URL.trim())
+  || (import.meta.env.PROD ? DEFAULT_RENDER_URL : 'http://localhost:8000');
+const NORMALIZED_BASE = rawEnv.replace(/\/+$/, '');
+
 export const API_CONFIG = {
-  // Backend base URL
-  BASE_URL: import.meta.env.VITE_API_URL || 'http://localhost:8000',
+  // Backend base URL (no trailing slash)
+  BASE_URL: NORMALIZED_BASE,
   
   // API endpoints (matches your actual backend)
   ENDPOINTS: {
